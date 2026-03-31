@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agent-workflow-kit"
-version = "0.2.0"
+version = "0.2.1"
 description = "CLI that packages, installs, and manages Claude Code subagent personas and workflow knowledge assets."
 readme = "README.md"
 requires-python = ">=3.12"

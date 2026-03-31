@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/mandelbro/agent-workflow-kit/compare/v0.2.0...v0.2.1) (2026-03-31)
+
+
+### Bug Fixes
+
+* **ci:** use commit SHA for pypi-publish, not annotated tag SHA ([e595950](https://github.com/mandelbro/agent-workflow-kit/commit/e595950ee4af71670076ff69493c36efb7f5d7f2))
+
 ## [0.2.0](https://github.com/mandelbro/agent-workflow-kit/compare/v0.1.0...v0.2.0) (2026-03-31)
 
 
