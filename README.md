@@ -3,7 +3,6 @@
 [![PyPI version](https://img.shields.io/pypi/v/agent-workflow-kit.svg)](https://pypi.org/project/agent-workflow-kit/)
 [![Python 3.12+](https://img.shields.io/pypi/pyversions/agent-workflow-kit.svg)](https://pypi.org/project/agent-workflow-kit/)
 [![CI](https://github.com/mandelbro/agent-workflow-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/mandelbro/agent-workflow-kit/actions/workflows/ci.yml)
-[![License](https://img.shields.io/pypi/l/agent-workflow-kit.svg)](https://github.com/mandelbro/agent-workflow-kit/blob/main/LICENSE)
 
 A Python CLI that packages, installs, and manages Claude Code subagent personas and workflow knowledge assets. It is the opinionated workflow layer that sits on top of [awesome-claude-hooks](https://github.com/mandelbro/awesome-claude-hooks) -- the two projects complement each other but remain independent.
 
