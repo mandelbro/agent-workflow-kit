@@ -1,0 +1,14 @@
+## Agent Kit Agents
+{% for agent in agents %}
+- {{ agent.description }}: @{{ agent.target }}
+{%- endfor %}
+
+## Agent Kit Workflows
+{% for workflow in workflows %}
+- {{ workflow.description }}: @{{ workflow.target }}
+{%- endfor %}
+
+## Agent Kit Guidelines
+{% for guideline in guidelines %}
+- {{ guideline.description }}: @{{ guideline.target }}
+{%- endfor %}
