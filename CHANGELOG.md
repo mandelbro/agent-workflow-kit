@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/mandelbro/agent-workflow-kit/compare/v0.2.1...v0.3.0) (2026-04-07)
+
+
+### Features
+
+* add Sentinel agent for security review and update README ([#3](https://github.com/mandelbro/agent-workflow-kit/issues/3)) ([749e2fe](https://github.com/mandelbro/agent-workflow-kit/commit/749e2fe1839a259ff8356437bc5c1dfdf29d191e))
+
 ## [0.2.1](https://github.com/mandelbro/agent-workflow-kit/compare/v0.2.0...v0.2.1) (2026-03-31)
 
 
