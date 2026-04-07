@@ -73,6 +73,7 @@ agent-kit uninstall --keep-files     # Only remove manifest and CLAUDE.md sectio
 | **Ive** | UX design -- accessibility, interaction patterns, component specs |
 | **Shelly** | Task generation and sprint planning -- story points, task breakdown |
 | **Zod** | Technical review -- security, performance, maintainability audits |
+| **Sentinel** | Security review -- STRIDE threat modeling, attack surface analysis, risk assessment |
 
 ### Workflows (installed to `~/.claude/knowledge/workflows/`)
 

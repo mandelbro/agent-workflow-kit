@@ -24,6 +24,7 @@ CORE_ASSETS: list[AssetEntry] = [
     AssetEntry("agents/Zod.md", "agents", "Technical review agent", "agent"),
     AssetEntry("agents/Shelly.md", "agents", "Task generation and sprint planning", "agent"),
     AssetEntry("agents/Ada.md", "agents", "Pair programming agent", "agent"),
+    AssetEntry("agents/Sentinel.md", "agents", "Security review and threat modeling agent", "agent"),
     # Workflows
     AssetEntry(
         "workflows/tasks-workflow.md",
