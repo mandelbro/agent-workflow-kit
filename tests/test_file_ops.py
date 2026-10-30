@@ -12,6 +12,7 @@ from claude_workflow_kit.core.file_ops import (
     atomic_write,
     backup_file,
     copy_file,
+    remove_empty_dirs,
     remove_file,
 )
 
@@ -161,3 +162,33 @@ class TestRemoveFile:
         result = remove_file(missing)
 
         assert result is False
+
+
+class TestRemoveEmptyDirs:
+    def test_removes_empty_directory_and_empty_ancestors_below_stop(self, tmp_path: Path) -> None:
+        stop = tmp_path / "skills"
+        leaf = stop / "a" / "b"
+        leaf.mkdir(parents=True)
+
+        remove_empty_dirs(leaf, stop)
+
+        assert stop.exists()
+        assert not (stop / "a").exists()
+
+    def test_keeps_directory_that_still_has_files(self, tmp_path: Path) -> None:
+        stop = tmp_path / "skills"
+        leaf = stop / "a"
+        leaf.mkdir(parents=True)
+        (leaf / "keep.md").write_text("x")
+
+        remove_empty_dirs(leaf, stop)
+
+        assert (leaf / "keep.md").exists()
+
+    def test_ignores_directories_outside_stop(self, tmp_path: Path) -> None:
+        outside = tmp_path / "agents"
+        outside.mkdir()
+
+        remove_empty_dirs(outside, tmp_path / "skills")
+
+        assert outside.exists()

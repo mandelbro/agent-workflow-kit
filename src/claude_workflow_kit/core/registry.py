@@ -13,7 +13,7 @@ class AssetEntry:
     source: str  # relative path within assets/ dir (e.g. "agents/Norwood.md")
     target_subdir: str  # subdirectory under CLAUDE_HOME (e.g. "agents")
     description: str  # human-readable description for CLAUDE.md references
-    category: str  # "agent", "workflow", or "guideline"
+    category: str  # "agent", "workflow", "guideline", or "skill"
 
 
 CORE_ASSETS: list[AssetEntry] = [
@@ -59,6 +59,25 @@ CORE_ASSETS: list[AssetEntry] = [
         "knowledge/coding-principles",
         "Testing-driven development strategy",
         "guideline",
+    ),
+    # Skills (slash-invoked, so no CLAUDE.md reference is generated for them)
+    AssetEntry(
+        "skills/tdd-pair/SKILL.md",
+        "skills/tdd-pair",
+        "TDD loop pairing skill (/tdd-pair)",
+        "skill",
+    ),
+    AssetEntry(
+        "skills/tdd-pair/outcome.schema.json",
+        "skills/tdd-pair",
+        "JSON Schema for the tdd-pair headless outcome",
+        "skill",
+    ),
+    AssetEntry(
+        "skills/tdd-pair/worked-example.md",
+        "skills/tdd-pair",
+        "tdd-pair worked example",
+        "skill",
     ),
 ]
 

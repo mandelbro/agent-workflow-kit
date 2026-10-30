@@ -51,7 +51,7 @@ def status_command(*, claude_home: Path | None = None) -> None:
 
 
 def list_command(*, category: str = "all") -> None:
-    """List available agents, workflows, or guidelines."""
+    """List available agents, workflows, guidelines, or skills."""
     category_map = {
         "agents": "agent",
         "agent": "agent",
@@ -59,12 +59,14 @@ def list_command(*, category: str = "all") -> None:
         "workflow": "workflow",
         "guidelines": "guideline",
         "guideline": "guideline",
+        "skills": "skill",
+        "skill": "skill",
     }
 
     if category != "all" and category not in category_map:
         console.print(
             f"[red]Unknown category: {category}[/red]\n"
-            "Valid categories: agents, workflows, guidelines"
+            "Valid categories: agents, workflows, guidelines, skills"
         )
         return
 

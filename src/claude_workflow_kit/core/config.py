@@ -23,6 +23,11 @@ class AgentKitConfig(BaseSettings):
         return self.claude_home / "agents"
 
     @property
+    def skills_dir(self) -> Path:
+        """Directory containing skill definitions (one subdirectory per skill)."""
+        return self.claude_home / "skills"
+
+    @property
     def knowledge_dir(self) -> Path:
         """Directory containing knowledge assets."""
         return self.claude_home / "knowledge"

@@ -1,0 +1,243 @@
+{
+  "$defs": {
+    "BatchOutcome": {
+      "additionalProperties": false,
+      "description": "Final state of one test batch.",
+      "properties": {
+        "id": {
+          "minimum": 1,
+          "title": "Id",
+          "type": "integer"
+        },
+        "name": {
+          "maxLength": 200,
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "in_progress",
+            "completed",
+            "blocked"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "phase": {
+          "enum": [
+            "red",
+            "green",
+            "refactor",
+            "done"
+          ],
+          "title": "Phase",
+          "type": "string"
+        },
+        "review_rounds": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Review Rounds",
+          "type": "integer"
+        },
+        "tests": {
+          "minimum": 0,
+          "title": "Tests",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "status",
+        "phase",
+        "review_rounds",
+        "tests"
+      ],
+      "title": "BatchOutcome",
+      "type": "object"
+    },
+    "FailingCheck": {
+      "additionalProperties": false,
+      "description": "A deterministic check (test, lint, typecheck) that was failing when the run stopped.",
+      "properties": {
+        "name": {
+          "maxLength": 200,
+          "title": "Name",
+          "type": "string"
+        },
+        "command": {
+          "maxLength": 200,
+          "title": "Command",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 2000,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "command",
+        "summary"
+      ],
+      "title": "FailingCheck",
+      "type": "object"
+    },
+    "OpenFinding": {
+      "additionalProperties": false,
+      "description": "An unresolved reviewer finding or non-blocking concern.",
+      "properties": {
+        "batch_id": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Batch Id"
+        },
+        "phase": {
+          "enum": [
+            "plan",
+            "red",
+            "green",
+            "refactor"
+          ],
+          "title": "Phase",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "critical",
+            "major",
+            "minor",
+            "nit",
+            "concern"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 2000,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "phase",
+        "severity",
+        "summary"
+      ],
+      "title": "OpenFinding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Structured result of a headless tdd-pair run.",
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "done",
+        "blocked",
+        "needs_info"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "spec_path": {
+      "maxLength": 200,
+      "title": "Spec Path",
+      "type": "string"
+    },
+    "base_branch": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Base Branch"
+    },
+    "base_warning": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Base Warning"
+    },
+    "batches": {
+      "items": {
+        "$ref": "#/$defs/BatchOutcome"
+      },
+      "maxItems": 200,
+      "title": "Batches",
+      "type": "array"
+    },
+    "failing_checks": {
+      "items": {
+        "$ref": "#/$defs/FailingCheck"
+      },
+      "maxItems": 50,
+      "title": "Failing Checks",
+      "type": "array"
+    },
+    "open_findings": {
+      "items": {
+        "$ref": "#/$defs/OpenFinding"
+      },
+      "maxItems": 200,
+      "title": "Open Findings",
+      "type": "array"
+    },
+    "blocked_reason": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Blocked Reason"
+    },
+    "spec_gaps": {
+      "items": {
+        "maxLength": 2000,
+        "type": "string"
+      },
+      "maxItems": 50,
+      "title": "Spec Gaps",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "spec_path"
+  ],
+  "title": "TddOutcome",
+  "type": "object"
+}

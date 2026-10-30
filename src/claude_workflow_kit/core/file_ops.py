@@ -47,3 +47,14 @@ def remove_file(path: Path) -> bool:
         path.unlink()
         return True
     return False
+
+
+def remove_empty_dirs(start: Path, stop_at: Path) -> None:
+    """Remove start and its empty ancestors, never going above stop_at (which is kept)."""
+    current = start
+    while current != stop_at and stop_at in current.parents:
+        try:
+            current.rmdir()
+        except OSError:
+            return
+        current = current.parent
