@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/mandelbro/agent-workflow-kit/compare/v0.3.0...v0.4.0) (2026-10-31)
+
+
+### Features
+
+* **skills:** add tdd-pair as a managed skill asset ([#6](https://github.com/mandelbro/agent-workflow-kit/issues/6)) ([72bd0ae](https://github.com/mandelbro/agent-workflow-kit/commit/72bd0aedff39d1d8743e63f6a043a7b7a40e241b))
+
 ## [0.3.0](https://github.com/mandelbro/agent-workflow-kit/compare/v0.2.1...v0.3.0) (2026-04-07)
 
 
