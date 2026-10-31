@@ -40,3 +40,13 @@ jobs:
 
       - name: Test
         run: uv run pytest --cov=claude_workflow_kit --cov-report=term-missing --cov-fail-under=80
+
+  # Stable status for the "ci" required check in the main ruleset; matrix job
+  # names change with the Python versions, so the ruleset targets this job instead.
+  ci:
+    if: always()
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all test jobs to pass
+        run: test "${{ needs.test.result }}" = "success"

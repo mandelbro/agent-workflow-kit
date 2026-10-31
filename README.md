@@ -41,11 +41,11 @@ agent-kit list
 
 | Command | Description |
 |---------|-------------|
-| `agent-kit install` | Copy agents, workflows, and guidelines to `~/.claude/`, inject managed section into `CLAUDE.md`, save manifest |
+| `agent-kit install` | Copy agents, workflows, guidelines, and skills to `~/.claude/`, inject managed section into `CLAUDE.md`, save manifest |
 | `agent-kit uninstall` | Remove managed files, `CLAUDE.md` section, and manifest |
 | `agent-kit update` | Detect upstream changes, handle conflicts with user-modified files |
 | `agent-kit status` | Show the current state of all managed files |
-| `agent-kit list [category]` | List available assets (`agents`, `workflows`, `guidelines`, or `all`) |
+| `agent-kit list [category]` | List available assets (`agents`, `workflows`, `guidelines`, `skills`, or `all`) |
 | `agent-kit diff <file>` | Show diff between installed and bundled version of a file |
 | `agent-kit doctor` | Validate installation health (directories, manifest, CLAUDE.md) |
 
@@ -75,6 +75,29 @@ agent-kit uninstall --keep-files     # Only remove manifest and CLAUDE.md sectio
 | **Zod** | Technical review -- security, performance, maintainability audits |
 | **Sentinel** | Security review -- STRIDE threat modeling, attack surface analysis, risk assessment |
 
+### Skills (installed to `~/.claude/skills/<name>/`)
+
+| Skill | Description |
+|-------|-------------|
+| **tdd-pair** | `/tdd-pair` -- drives Ada's red/green/refactor loop in test batches against a spec. `start` is human-gated, `auto` is gated by a Zod review, and `auto --headless` runs unattended (for `claude -p`) and ends with a JSON outcome |
+
+Skills are slash-invoked, so they get no `CLAUDE.md` reference. `tdd-pair` expects the **Ada** and **Zod** agents from this kit, falls back to a general-purpose reviewer if Zod is not registered, and never commits.
+
+#### tdd-pair headless outcome
+
+`/tdd-pair auto --headless <spec>` never prompts. Its last message ends with one fenced `json` block that conforms to `skills/tdd-pair/outcome.schema.json` (also generated from `claude_workflow_kit.core.tdd_outcome.TddOutcome`):
+
+| Field | Meaning |
+|-------|---------|
+| `schema_version` | Always `1` |
+| `status` | `done`, `blocked` (needs a human; `blocked_reason` required), or `needs_info` (spec is not a usable contract; `spec_gaps` required) |
+| `spec_path`, `base_branch`, `base_warning` | Which spec ran, against which base, and any staleness warning |
+| `batches` | `id`, `name`, `status`, `phase`, `review_rounds`, `tests` per batch |
+| `failing_checks` | Test/lint/typecheck commands failing at stop (must be empty for `done`) |
+| `open_findings` | Unresolved reviewer findings: `batch_id`, `phase`, `severity`, `summary` |
+
+The outcome is **advisory**: it comes from a model. Consumers should call `parse_outcome()` (fails closed on a missing, malformed, or schema-violating block), re-run the checks themselves, and never treat `done` as proof. Rate limits and crashes are detected by the caller from the process, not reported here.
+
 ### Workflows (installed to `~/.claude/knowledge/workflows/`)
 
 | Workflow | Description |
@@ -96,7 +119,7 @@ agent-kit uninstall --keep-files     # Only remove manifest and CLAUDE.md sectio
 ### Install Flow
 
 1. Creates target directories under `~/.claude/` (agents, knowledge/workflows, etc.)
-2. Copies each bundled markdown asset to its target location
+2. Copies each bundled asset (markdown, plus the tdd-pair JSON schema) to its target location
 3. Injects a sentinel-bounded managed section into `~/.claude/CLAUDE.md` with `@` references
 4. Writes a manifest (`~/.claude/.workflow-kit/manifest.json`) tracking installed files with SHA-256 checksums
 
@@ -186,11 +209,13 @@ src/claude_workflow_kit/
 ├── core/
 │   ├── config.py       # Pydantic settings (CLAUDE_HOME, derived paths)
 │   ├── manifest.py     # Manifest read/write, SHA-256 checksums, file status
-│   ├── file_ops.py     # Atomic write, backup, copy, remove
+│   ├── file_ops.py     # Atomic write, backup, copy, remove, prune empty dirs
+│   ├── tdd_outcome.py  # Pydantic model + parser for the tdd-pair headless outcome
 │   ├── claude_md.py    # Sentinel-based CLAUDE.md section management
 │   └── registry.py     # Asset registry mapping bundled files to targets
-└── assets/             # 12 bundled markdown files
-    ├── agents/         # 6 agent personas
+└── assets/             # bundled files
+    ├── agents/         # 7 agent personas
+    ├── skills/         # tdd-pair (SKILL.md, outcome.schema.json, worked-example.md)
     ├── workflows/      # 3 workflow definitions
     ├── guidelines/     # 2 guideline files
     └── coding-principles/  # 1 coding principle

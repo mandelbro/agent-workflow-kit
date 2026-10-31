@@ -15,7 +15,12 @@ from claude_workflow_kit.core.claude_md import (
     remove_section,
 )
 from claude_workflow_kit.core.config import AgentKitConfig, get_config
-from claude_workflow_kit.core.file_ops import atomic_write, copy_file, remove_file
+from claude_workflow_kit.core.file_ops import (
+    atomic_write,
+    copy_file,
+    remove_empty_dirs,
+    remove_file,
+)
 from claude_workflow_kit.core.manifest import (
     FileEntry,
     Manifest,
@@ -161,6 +166,7 @@ def uninstall_command(
                 )
             else:
                 removed = remove_file(target)
+                remove_empty_dirs(target.parent, config.skills_dir)
                 status_msg = "[green]removed[/green]" if removed else "[dim]missing[/dim]"
             table.add_row(entry.source, status_msg)
     else:
